@@ -1,0 +1,20 @@
+name = "fuse-extractor"
+type = "service"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+# Environment variables
+[env.production]
+routes = [
+  { pattern = "*.fuse-extractor.dev", zone_name = "fuse-extractor.dev" }
+]
+
+# Local development settings
+[env.development]
+routes = []
+
+# Observability
+observability = { enabled = true }
+
+# Limits
+limits = { cpu_milliseconds = 50 }
