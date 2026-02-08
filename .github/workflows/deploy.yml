@@ -63,6 +63,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate wrangler.toml from secrets
+        run: |
+          cat > wrangler.toml << 'EOF'
+          name = "${{ secrets.WORKER_NAME || 'fuse-extractor' }}"
+          type = "service"
+          main = "src/index.ts"
+          compatibility_date = "2024-09-23"
+          
+          [env.production]
+          routes = [
+            { pattern = "${{ secrets.WORKER_ROUTE || '*.fuse-extractor.dev' }}", zone_name = "${{ secrets.ZONE_NAME || 'fuse-extractor.dev' }}" }
+          ]
+          
+          [env.development]
+          routes = []
+          
+          observability = { enabled = true }
+          limits = { cpu_milliseconds = 50 }
+          EOF
+
       - name: Deploy to Cloudflare Workers
         run: npm run deploy
         env:

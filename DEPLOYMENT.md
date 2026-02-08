@@ -4,6 +4,8 @@ This file contains the configuration for deploying to Cloudflare Workers.
 
 ## Setup Instructions
 
+### Local Development
+
 1. **Create a Cloudflare Account**
    - Go to https://dash.cloudflare.com/
    - Sign up or sign in
@@ -19,14 +21,38 @@ This file contains the configuration for deploying to Cloudflare Workers.
    ```
    This will open a browser window to authenticate your account.
 
-4. **Update wrangler.toml**
-   - Replace `name = "fuse-extractor"` with your desired worker name
-   - Update routes if you have a custom domain
+4. **Setup Local Configuration**
+   ```bash
+   cp wrangler.toml.example wrangler.toml
+   ```
+   Edit `wrangler.toml` with your worker name and custom domain settings.
 
 5. **Deploy**
    ```bash
    npm run deploy
    ```
+
+### GitHub Actions Deployment (CI/CD)
+
+The GitHub Actions workflow automatically generates `wrangler.toml` from secrets during deployment.
+
+**Required GitHub Secrets** (set in your repo Settings → Secrets and variables → Actions):
+
+- **`CLOUDFLARE_API_TOKEN`** (Required)
+  - Get from: https://dash.cloudflare.com/profile/api-tokens
+  - Create a token with "Edit Cloudflare Workers" permission
+
+- **`CLOUDFLARE_ACCOUNT_ID`** (Required)
+  - Get from: https://dash.cloudflare.com/ (bottom left corner)
+
+- **`WORKER_NAME`** (Optional, defaults to "fuse-extractor")
+  - Your custom worker name
+
+- **`WORKER_ROUTE`** (Optional, defaults to "*.fuse-extractor.dev")
+  - Route pattern for your worker
+
+- **`ZONE_NAME`** (Optional, defaults to "fuse-extractor.dev")
+  - Your domain name
 
 ## Environment Configuration
 
