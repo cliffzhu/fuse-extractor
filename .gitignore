@@ -14,4 +14,3 @@ dist/
 .eslintcache
 coverage/
 .nyc_output/
-wrangler.toml
